@@ -1,7 +1,7 @@
 class Impostor():
     def __init__(self,player,cooldown):
         self.__player = player
-        self.cooldown = cooldown
+        self.__cooldown = cooldown
 
     def get_player(self):
         return self.__player

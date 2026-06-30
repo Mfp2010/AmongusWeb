@@ -52,7 +52,10 @@ def set_cooldown():
     print([i.to_dict() for i in imposters])
     imposters[data["imposter"]].set_cooldown(data["cooldown"])
     print([i.to_dict() for i in imposters])
-    game.set_imposters[imposters]
+    game.set_imposters(imposters)
+    return jsonify({
+        "imposters": [i.to_dict() for i in imposters]
+    })
 
 @app.route("/tasks",methods=['GET','POST'])
 def tasks_status():
