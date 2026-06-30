@@ -81,14 +81,14 @@ export default function Home() {
 
   return (
     <main style={{ padding: '20px' }}>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Among_Us.png/1920px-Among_Us.png" alt="AMONGUS" className=""/>
       <h2>{msg ?? "A carregar..."}</h2> 
       
-      <h3>Lista de Jogadores:</h3>
       {players.length === 0 ? (
         <p>Nenhum jogador conectado.</p>
       ) : (
         <>
-        <div class="dtable">
+        <div className="dtable">
         <table className="table">
           <thead className="tableh"><tr>
             <th>Jogador</th>
