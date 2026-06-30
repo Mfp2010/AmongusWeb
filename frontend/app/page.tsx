@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -8,6 +7,8 @@ export default function Home() {
   const [players, setPlayers] = useState<string[]>([]);
   const [tasks, setTasks] = useState<string[]>([]);
   const [game, setGame] = useState<string[]>([]);
+  const [state, setState] = useState<number>(0);
+  const [emergency_meeting, setEmergency_meeting] = useState<boolean>(false);
   const [imposters, setImposters] = useState<string[]>([]);
 
   useEffect(() => {
@@ -40,15 +41,32 @@ export default function Home() {
           setTasks(data.tasks); // Atualiza a lista com as tasks que vieram do backend
         })
         .catch(err => console.error("Erro ao procurar dados (/tasks):", err));
-        fetch("http://localhost:5000/get_game")
+      fetch("http://localhost:5000/get_game")
         .then(r => {
           if (!r.ok) throw new Error("Erro na API");
           return r.json();
         })
         .then(data => {
-          setImposters(data.imposters); // Atualiza a lista com o jogo que veio do backend
+          setImposters(data.imposters); // Atualiza a lista com os impostores que vieram do backend
+          setGame(data); // Atualiza a lista com o jogo que veio do backend
         })
         .catch(err => console.error("Erro ao procurar dados (/get_game):", err));
+      fetch("http://localhost:5000/game")
+        .then(r => {
+          if (!r.ok) throw new Error("Erro na API");
+          return r.json();
+        })
+        .then(data => {
+          setState(data.state); // Atualiza a lista com os impostores que vieram do backend
+          setEmergency_meeting(data.emergency_meeting); // Atualiza a lista com o jogo que veio do backend
+        })
+        .catch(err => console.error("Erro ao procurar dados (/get_game):", err));
+        
+        /*let description: string = "Acabou";
+        if (state == 1) {description = "A decorrer"};
+        if (state == 2) {description = "Reator"};
+        if (state == 3) {description = "Escadas"};
+        setMsg({description});*/
     };
 
     // Executa imediatamente ao carregar a página
@@ -70,27 +88,27 @@ export default function Home() {
         <p>Nenhum jogador conectado.</p>
       ) : (
         <><table>
-          <tr>
+          <thead><tr>
             <th>Jogador</th>
             <th>Impostor?</th>
             <th>Cooldown</th>
             <th>Morto</th>
-            {tasks.map((task, index) => (<th>{task.name} {task.place}</th>))}
-          </tr>
-          {players.map((player, index) => (<tr>
+            {tasks.map((task, index) => (<th key={index}>{task.name} {task.place}</th>))}
+          </tr></thead>
+          <tbody>{players.map((player, index) => (<tr key={index}>
             <td>{player.name}</td>
             <td>Não</td>
             <td>-</td>
             <td>{player.state ? "Morto" : "Vivo"}</td>
-            {player.tasks.map((task, index) => (<td>{task.completed ? "✓" : "✗"}</td>))}
+            {player.tasks.map((task, index) => (<td key={index}>{task.completed ? "✓" : "✗"}</td>))}
           </tr>))}
-          {imposters.map((imposter, index) => (<tr>
+          {imposters.map((imposter, index) => (<tr key={index}>
             <td>{imposter.player.name}</td>
             <td>Sim</td>
             <td>{imposter.cooldown ? "Sim" : "Não"}</td>
             <td>{imposter.player.state ? "Morto" : "Vivo"}</td>
-            {tasks.map((task, index) => (<td>-</td>))}
-          </tr>))}
+            {tasks.map((task, index) => (<td key={index}>-</td>))}
+          </tr>))}</tbody>
         </table></>
       )}
     </main>
