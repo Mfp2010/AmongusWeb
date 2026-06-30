@@ -16,8 +16,16 @@ export default function Home() {
           return r.json();
         })
         .then(data => {
-          setMsg(data.msg);
-          setPlayers(data.players); // Atualiza a lista com o que veio do backend
+          setMsg(data.msg); // Atualiza a lista com o que veio do backend
+        })
+        .catch(err => console.error("Erro ao procurar dados:", err));
+      fetch("http://localhost:5000/players")
+        .then(r => {
+          if (!r.ok) throw new Error("Erro na API");
+          return r.json();
+        })
+        .then(data => {
+          setPlayers(data); // Atualiza a lista com os players que vieram do backend
         })
         .catch(err => console.error("Erro ao procurar dados:", err));
     };
@@ -42,7 +50,7 @@ export default function Home() {
       ) : (
         <ul>
           {players.map((player, index) => (
-            <li key={index}>{player}</li>
+            <ul key={index}>{player.name} {player.state} {player.tasks.map((task, index) => (<li key={index}>{task.name} {task.completed}</li>))}</ul>
           ))}
         </ul>
       )}

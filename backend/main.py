@@ -7,10 +7,10 @@ app = Flask(__name__)
 CORS(app)
 
 tasks = [
-    Task("task1",0),
-    Task("task2",1),
-    Task("task3",1),
-    Task("task4",0)
+    Task("task1",0,"eletrica","fios"),
+    Task("task2",1,"1.09","gambling"),
+    Task("task3",1,"cesium","rubix cube"),
+    Task("task4",0,"auditorio","matematica")
 
 ]
 
@@ -23,6 +23,9 @@ players = [
 def get_players():
     return jsonify([p.to_dict() for p in players])
 
+@app.route('/tasks')
+def get_tasks():
+    return jsonify([t.to_dict() for t in tasks])
 
 
 @app.route("/")
@@ -30,8 +33,8 @@ def hello_world():
     # Juntamos o msg e os players num único JSON
     return jsonify({
         "msg": "Hello, World!",
-        "players": players,
-        "tasks": tasks
+        "players": [p.to_dict() for p in players],
+        "tasks": [t.to_dict() for t in tasks]
     })
 
 
