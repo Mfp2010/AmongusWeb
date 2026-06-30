@@ -23,6 +23,8 @@ players = [
 def get_players():
     return jsonify([p.to_dict() for p in players])
 
+
+
 @app.route("/")
 def hello_world():
     # Juntamos o msg e os players num único JSON
@@ -31,6 +33,7 @@ def hello_world():
         "players": players,
         "tasks": tasks
     })
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
