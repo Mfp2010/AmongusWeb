@@ -24,3 +24,14 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.table {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 5px 5px 0px rgba(17, 17, 17, 0.158);;
+}
+
+.tableh {
+  border-style: none none solid none;
+  border-width: 3px;
+  border-color: black;
+}

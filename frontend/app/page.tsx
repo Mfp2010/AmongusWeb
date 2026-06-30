@@ -87,8 +87,8 @@ export default function Home() {
       {players.length === 0 ? (
         <p>Nenhum jogador conectado.</p>
       ) : (
-        <><table>
-          <thead><tr>
+        <><table className="table">
+          <thead className="tableh"><tr>
             <th>Jogador</th>
             <th>Impostor?</th>
             <th>Cooldown</th>

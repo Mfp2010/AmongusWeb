@@ -42,7 +42,7 @@ def kill_player():
     imposters[data["imposter"]].set_cooldown(1)
     game.set_players(players)
     game.set_imposters(imposters)
-    return jsonify({"players": players, "imposters": imposters})
+    return jsonify({"players": [p.to_dict() for p in players], "imposters": [i.to_dict() for i in imposters]})
 
 @app.route("/vote",methods=['POST'])
 def vote():
@@ -51,7 +51,7 @@ def vote():
     if data["result"] == "player":
         players[data["id"]].set_state(1)
     elif data["result"] == "imposter":
-        imposters[data["id"].set_state(1)]
+        imposters[data["id"]].get_player().set_state(1)
     else:
         game.set_state(1)
 
