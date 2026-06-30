@@ -55,6 +55,7 @@ def vote():
     else:
         game.set_state(1)
 
+
 @app.route("/game",methods=['GET','POST'])
 def game_status():
     global game
@@ -97,11 +98,9 @@ def tasks_status():
         
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
-        game = Game(data["state"])
-        print(game.get_state())
+        players[data["player"]].get_task()[data["task"]].set_completed(1)
     return jsonify({
-        "state": game.get_state()
+        "tasks": [t.to_dict() for t in players[data["player"]].get_task()]
     })
 
 
