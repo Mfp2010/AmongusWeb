@@ -21,11 +21,15 @@ players = [
     Player("Maria", tasks, 1),
 ]
 
-game = Game(0, players, [Impostor("Abel",0)])
+game = Game(0, players, [Impostor(Player("Abel",tasks,0),0)])
 
 @app.route('/players')
 def get_players():
     return jsonify([p.to_dict() for p in players])
+
+@app.route('/get_game')
+def get_game():
+    return jsonify(game.to_dict())
 
 @app.route("/game",methods=['GET','POST'])
 def game_status():

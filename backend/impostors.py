@@ -17,6 +17,6 @@ class Impostor():
     
     def to_dict(self):
         return {
-            "imposters": self.__player,
+            "player": self.__player.to_dict(),
             "cooldown": self.__cooldown
         }

@@ -21,3 +21,10 @@ class Game():
     
     def set_imposters(self,newimposters):
         self.__imposters = newimposters
+    
+    def to_dict(self):
+        return {
+            "state": self.__state,
+            "players": [p.to_dict() for p in self.__players],
+            "imposters": [i.to_dict() for i in self.__imposters]
+        }
