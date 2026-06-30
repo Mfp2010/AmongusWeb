@@ -12,5 +12,11 @@ class Impostor():
     def set_player(self,newplayer):
         self.__player = newplayer
 
-    def set_cooldown(self,setcooldown):
-        self.__cooldown = setcooldown
+    def set_cooldown(self,newcooldown):
+        self.__cooldown = newcooldown
+    
+    def to_dict(self):
+        return {
+            "imposters": self.__player,
+            "cooldown": self.__cooldown
+        }

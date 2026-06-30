@@ -3,6 +3,7 @@ from flask_cors import CORS
 from player import Player  # importa a classe
 from task import Task  # importa a classe
 from game import Game
+from impostors import Impostor
 
 app = Flask(__name__)
 CORS(app)
@@ -20,7 +21,7 @@ players = [
     Player("Maria", tasks, 1),
 ]
 
-game = Game(0)
+game = Game(0, players, [Impostor("Abel",0)])
 
 @app.route('/players')
 def get_players():
@@ -36,11 +37,22 @@ def game_status():
     if request.method == 'POST':
         data = request.get_json()
         print(data)
-        game = Game(data["state"])
+        game = Game(data["state"], data["players"], data["imposters"])
         print(game.get_state())
     return jsonify({
         "state": game.get_state()
     })
+
+@app.route("/set_cooldown",methods=['POST'])
+def set_cooldown():
+    global game
+    data = request.get_json()
+    print(data)
+    imposters = game.get_imposters()
+    print([i.to_dict() for i in imposters])
+    imposters[data["imposter"]].set_cooldown(data["cooldown"])
+    print([i.to_dict() for i in imposters])
+    game.set_imposters[imposters]
 
 @app.route("/tasks",methods=['GET','POST'])
 def tasks_status():
