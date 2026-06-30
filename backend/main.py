@@ -8,7 +8,9 @@ from impostors import Impostor
 app = Flask(__name__)
 CORS(app)
 
-emergency_meeting = False
+emergency_meeting = 0
+
+states = {0: "Acabou", 1: "A decorrer", 2: "Reator", 3: "Escadas"}
 
 tasks = [
     Task("task1",0,"eletrica","fios"),
@@ -24,7 +26,7 @@ players = [
 
 imposters = [Impostor(Player("Abel",tasks,0),0)]
 
-game = Game(0, players, imposters)
+game = Game(1, players, imposters)
 
 @app.route('/players')
 def get_players():
@@ -53,7 +55,7 @@ def vote():
     elif data["result"] == "imposter":
         imposters[data["id"]].get_player().set_state(1)
     else:
-        game.set_state(1)
+        emergency_meeting = 0
 
 
 @app.route("/game",methods=['GET','POST'])
@@ -61,7 +63,7 @@ def game_status():
     global game
     if request.method == "GET":
         return jsonify({
-            "state": game.get_state(),
+            "state": states[game.get_state()],
             "emergency_meeting": emergency_meeting
         })
     if request.method == 'POST':
@@ -70,7 +72,7 @@ def game_status():
         game = Game(data["state"], data["players"], data["imposters"])
         print(game.get_state())
     return jsonify({
-        "state": game.get_state(),
+        "state": states[game.get_state()],
         "emergency_meeting": emergency_meeting
     })
 
@@ -87,6 +89,12 @@ def set_cooldown():
     return jsonify({
         "imposters": [i.to_dict() for i in imposters]
     })
+
+@app.route("/activate_emergency_meeting",methods=['POST'])
+def activate_emergency_meeting():
+    global emergency_meeting
+    emergency_meeting = 0 if emergency_meeting else 1
+    return jsonify({"emergency_meeting": emergency_meeting})
 
 @app.route("/tasks",methods=['GET','POST'])
 def tasks_status():

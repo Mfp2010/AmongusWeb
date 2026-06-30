@@ -7,9 +7,14 @@ export default function Home() {
   const [players, setPlayers] = useState<string[]>([]);
   const [tasks, setTasks] = useState<string[]>([]);
   const [game, setGame] = useState<string[]>([]);
-  const [state, setState] = useState<number>(0);
+  const [state, setState] = useState<string>("");
   const [emergency_meeting, setEmergency_meeting] = useState<boolean>(false);
   const [imposters, setImposters] = useState<string[]>([]);
+
+  async function activate_emergency_meeting() {
+    let value: number = emergency_meeting ? 0 : 1;
+    let response: Response = await fetch("https://localhost:5000/activate_emergency_meeting", {method: 'POST'});
+  }
 
   useEffect(() => {
     // Função que faz o pedido ao backend
@@ -61,12 +66,6 @@ export default function Home() {
           setEmergency_meeting(data.emergency_meeting); // Atualiza a lista com o jogo que veio do backend
         })
         .catch(err => console.error("Erro ao procurar dados (/get_game):", err));
-        
-        /*let description: string = "Acabou";
-        if (state == 1) {description = "A decorrer"};
-        if (state == 2) {description = "Reator"};
-        if (state == 3) {description = "Escadas"};
-        setMsg({description});*/
     };
 
     // Executa imediatamente ao carregar a página
@@ -82,7 +81,8 @@ export default function Home() {
   return (
     <main style={{ padding: '20px' }}>
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Among_Us.png/1920px-Among_Us.png" alt="AMONGUS" className=""/>
-      <h2>{msg ?? "A carregar..."}</h2> 
+      <h2>{state ?? "A carregar..."}</h2>
+      <h2>{(emergency_meeting ? <button onClick={activate_emergency_meeting}>Desativar emergency meeting</button> : <button onClick={activate_emergency_meeting}>Ativar emergency meeting</button>)}</h2> 
       
       {players.length === 0 ? (
         <p>Nenhum jogador conectado.</p>
