@@ -87,7 +87,9 @@ export default function Home() {
       {players.length === 0 ? (
         <p>Nenhum jogador conectado.</p>
       ) : (
-        <><table className="table">
+        <>
+        <div class="dtable">
+        <table className="table">
           <thead className="tableh"><tr>
             <th>Jogador</th>
             <th>Impostor?</th>
@@ -109,7 +111,7 @@ export default function Home() {
             <td>{imposter.player.state ? "Morto" : "Vivo"}</td>
             {tasks.map((task, index) => (<td key={index}>-</td>))}
           </tr>))}</tbody>
-        </table></>
+        </table></div></>
       )}
     </main>
   );
