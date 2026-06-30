@@ -43,15 +43,13 @@ def game_status():
     })
 
 @app.route("/tasks",methods=['GET','POST'])
-def game_status():
+def tasks_status():
     if request.method == "GET":
-        for task in tasks:
-            return jsonify({
-                "name": task.get_state(),
-                "completed": task.get_state(),
-                "place": task.get_state(),
-                "objective": task.get_state()
-            })
+        print(tasks[0].get_name())
+        return jsonify({
+        "tasks": [t.to_dict() for t in tasks],
+        })
+        
     if request.method == 'POST':
         data = request.get_json()
         print(data)
